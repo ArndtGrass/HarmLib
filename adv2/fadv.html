@@ -689,6 +689,11 @@
     </div>
 
     <script>
+        // --- START: Konfiguration ---
+        const SERVER_PATH = "https://lib.grass-kassel.de/adv2/";
+        const UID_STORAGE_KEY = "adv2_fadv_storyFilters";
+        // --- END: Konfiguration ---
+
         // Globale Variablen
         let allStories = [];
         let allCodes = [];
@@ -778,7 +783,7 @@
         async function loadData() {
             try {
                 // Codes laden
-                const codesResponse = await fetch('https://lib.grass-kassel.de/adv2/codes.csv?v=' + Date.now());
+                const codesResponse = await fetch(SERVER_PATH + 'codes.csv?v=' + Date.now());
                 const codesText = await codesResponse.text();
                 const codesData = Papa.parse(codesText, {
                     header: true,
@@ -788,7 +793,7 @@
                 allCodes = codesData.data;
 
                 // Stories laden
-                const storiesResponse = await fetch('https://lib.grass-kassel.de/adv2/stories.csv?v=' + Date.now());
+                const storiesResponse = await fetch(SERVER_PATH + 'stories.csv?v=' + Date.now());
                 const storiesText = await storiesResponse.text();
                 const storiesData = Papa.parse(storiesText, {
                     header: true,
@@ -845,7 +850,7 @@
                     return { hasLoadedFilters: false };
                 }
 
-                const savedData = localStorage.getItem('adv2_fadv_storyFilters');
+                const savedData = localStorage.getItem(UID_STORAGE_KEY);
                 if (!savedData) {
                     return { hasLoadedFilters: false };
                 }
@@ -883,7 +888,7 @@
 
             } catch (error) {
                 console.warn('Fehler beim automatischen Laden der Filter:', error);
-                localStorage.removeItem('adv2_fadv_storyFilters');
+                localStorage.removeItem(UID_STORAGE_KEY);
                 return { hasLoadedFilters: false };
             }
         }
@@ -1098,7 +1103,7 @@
                 };
 
                 if (typeof Storage !== "undefined") {
-                    localStorage.setItem('adv2_fadv_storyFilters', JSON.stringify(filterData));
+                    localStorage.setItem(UID_STORAGE_KEY, JSON.stringify(filterData));
                 }
             } catch (error) {
                 console.warn('Auto-Save fehlgeschlagen:', error);
@@ -1175,7 +1180,7 @@
                                         </div>
                                     </div>
                                     <div style="margin-top: 10px;">
-                                        <a href="https://lib.grass-kassel.de/adv2/detail2.html?file=${story.html}_1.html" target="_blank" style="color: #007bff; text-decoration: none; font-weight: bold;">📖 Story öffnen</a>
+                                        <a href="${SERVER_PATH}detail2.html?file=${story.html}_1.html" target="_blank" style="color: #007bff; text-decoration: none; font-weight: bold;">📖 Story öffnen</a>
                                     </div>
                                 </div>
                             </td>
@@ -1299,7 +1304,7 @@
 
                 // In Browser-Speicher speichern (konsistentes Format)
                 if (typeof(Storage) !== "undefined") {
-                    localStorage.setItem('adv2_fadv_storyFilters', JSON.stringify(filterData));
+                    localStorage.setItem(UID_STORAGE_KEY, JSON.stringify(filterData));
                 }
 
                 // Erfolgs-Feedback
@@ -1326,7 +1331,7 @@
                     return;
                 }
 
-                const savedData = localStorage.getItem('adv2_fadv_storyFilters');
+                const savedData = localStorage.getItem(UID_STORAGE_KEY);
                 if (!savedData) {
                     alert('Keine gespeicherten Filter gefunden!');
                     return;
@@ -1381,7 +1386,7 @@
 
             } catch (error) {
                 console.error('Fehler beim Laden:', error);
-                localStorage.removeItem('adv2_fadv_storyFilters');
+                localStorage.removeItem(UID_STORAGE_KEY);
                 alert('Fehler beim Laden der Filter! Speicher wurde zurückgesetzt.');
             }
         }
@@ -1400,7 +1405,7 @@
 
             // Browser-Speicher löschen
             if (typeof(Storage) !== "undefined") {
-                localStorage.removeItem('adv2_fadv_storyFilters');
+                localStorage.removeItem(UID_STORAGE_KEY);
             }
 
             // Ersten Filter-Set hinzufügen (nur bei manueller Löschung)
