@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Story Filter & Browser</title>
+    <title>FetLibrary: Story Filter & Browser</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
     <style>
         * {
@@ -33,6 +33,7 @@
             color: white;
             padding: 30px;
             text-align: center;
+            position: relative;
         }
 
         .header h1 {
@@ -612,13 +613,211 @@
         .scroll-container::-webkit-scrollbar-thumb:hover {
             background: #555;
         }
+
+        /* --- Theme Switcher --- */
+        .theme-switcher {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+        }
+
+        .theme-switcher button {
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1.3rem;
+            line-height: 1;
+            transition: all 0.3s ease;
+        }
+
+        .theme-switcher button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.1);
+        }
+
+        #theme-toggle-sun {
+            display: none; /* Hidden by default, shown via JS in dark mode */
+        }
+
+        /* --- Dark Mode Styles --- */
+        body.dark-mode {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #e0e0e0;
+        }
+
+        body.dark-mode .container {
+            background: rgba(30, 30, 63, 0.85);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        body.dark-mode .header {
+            background: linear-gradient(45deg, #0f1020, #1e1e3f);
+        }
+        
+        body.dark-mode .header h2 {
+            color: #b0b0d0;
+        }
+
+        body.dark-mode .loading {
+            color: #c0c0e0;
+        }
+
+        body.dark-mode .filter-panel {
+            background: #161633;
+            border-color: #2a2a50;
+        }
+
+        body.dark-mode .autosave-control label,
+        body.dark-mode .logic-connector,
+        body.dark-mode .story-author,
+        body.dark-mode .story-votes,
+        body.dark-mode .story-size,
+        body.dark-mode .story-date,
+        body.dark-mode .story-synopsis,
+        body.dark-mode .no-results {
+            color: #a0a0c0;
+        }
+        
+        body.dark-mode .text-search,
+        body.dark-mode .page-input,
+        body.dark-mode .per-page-select {
+            background: #2a2a50;
+            border-color: #4a4a8a;
+            color: #e0e0e0;
+        }
+        
+        body.dark-mode .per-page-select {
+             background: #3b3b7a;
+        }
+
+        body.dark-mode .filter-set {
+            background: #1e1e3f;
+            border-color: #3b3b7a;
+        }
+        body.dark-mode .filter-set:hover {
+            border-color: #5a5a9a;
+        }
+
+        body.dark-mode .filter-set-header,
+        body.dark-mode .subcategory-title,
+        body.dark-mode .story-table th {
+            background: linear-gradient(45deg, #16213e, #2a2a50);
+        }
+        
+        body.dark-mode .story-table th:hover {
+            background: linear-gradient(45deg, #2a2a50, #16213e);
+        }
+
+        body.dark-mode .logic-dropdown {
+            background: rgba(42, 42, 80, 0.9);
+            border-color: rgba(176, 176, 208, 0.3);
+            color: #e0e0e0;
+        }
+        
+        body.dark-mode .code-btn {
+            background: #3b3b7a;
+            border-color: #5a5a9a;
+            color: #c0c0e0;
+        }
+        
+        body.dark-mode .code-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+        }
+
+        body.dark-mode .code-btn.maybe {
+             background: #5a6268;
+             color: #e0e0e0;
+             border-color: #6c757d;
+        }
+        
+        body.dark-mode .code-btn.yes,
+        body.dark-mode .code-btn.yes:hover {
+            background: #28a745;
+            border-color: #1e7e34;
+        }
+
+        body.dark-mode .code-btn.no,
+        body.dark-mode .code-btn.no:hover {
+            background: #dc3545;
+            border-color: #bd2130;
+        }
+
+        body.dark-mode .results-panel {
+            background: #161633;
+            border-color: #2a2a50;
+        }
+        
+        body.dark-mode .results-header {
+            background: linear-gradient(45deg, #17a2b8, #138496);
+        }
+        
+        body.dark-mode .pagination-bottom {
+            background: #1e1e3f;
+            border-top-color: #2a2a50;
+        }
+        
+        body.dark-mode .pagination-bottom .page-input {
+             background: #2a2a50;
+             border-color: #4a4a8a;
+             color: #e0e0e0;
+        }
+
+        body.dark-mode .story-table {
+            background: #1e1e3f;
+        }
+
+        body.dark-mode .story-row {
+            border-bottom-color: #2a2a50;
+        }
+        
+        body.dark-mode .story-row:hover {
+            background: #2a2a50;
+        }
+        
+        body.dark-mode .story-row.expanded {
+            background: #252545;
+        }
+        
+        body.dark-mode .story-index,
+        body.dark-mode .story-title {
+            color: #e8e8ff;
+        }
+        
+        body.dark-mode .story-details {
+            background: #2a2a50;
+            border-top-color: #3b3b7a;
+        }
+
+        body.dark-mode .story-code-tag {
+            background: linear-gradient(45deg, #4a4a8a, #3b3b7a);
+        }
+        
+        body.dark-mode .scroll-container::-webkit-scrollbar-thumb {
+            background: #4a4a8a;
+        }
+
+        body.dark-mode .scroll-container::-webkit-scrollbar-thumb:hover {
+            background: #5a5a9a;
+        }
+        
+        body.dark-mode .scroll-container::-webkit-scrollbar-track {
+            background: #1e1e3f;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>Story Filter & Browser</h1>
-            <h2>FetLibrary</h2>
+            <h1>FetLibrary</h1>
+            <h2>Story Filter & Browser</h2>
+            <div class="theme-switcher">
+                <button id="theme-toggle-sun" onclick="toggleTheme()" title="Heller Modus">☀️</button>
+                <button id="theme-toggle-moon" onclick="toggleTheme()" title="Dunkler Modus">🌙</button>
+            </div>
         </div>
 
         <div id="loading" class="loading">
@@ -694,6 +893,54 @@
         const UID_STORAGE_KEY = "adv2_fadv_storyFilters";
         // --- END: Konfiguration ---
 
+        // --- START: Theme-Umschaltung ---
+        function toggleTheme() {
+            const body = document.body;
+            body.classList.toggle('dark-mode');
+
+            const isDarkMode = body.classList.contains('dark-mode');
+            
+            // Buttons umschalten
+            document.getElementById('theme-toggle-sun').style.display = isDarkMode ? 'inline-block' : 'none';
+            document.getElementById('theme-toggle-moon').style.display = isDarkMode ? 'none' : 'inline-block';
+
+            // Einstellung speichern
+            try {
+                if (typeof(Storage) !== "undefined") {
+                    localStorage.setItem(THEME_STORAGE_KEY, isDarkMode ? 'dark' : 'light');
+                }
+            } catch (error) {
+                console.warn('Fehler beim Speichern des Themes:', error);
+            }
+        }
+
+        function loadTheme() {
+            try {
+                if (typeof(Storage) !== "undefined") {
+                    const savedTheme = localStorage.getItem(THEME_STORAGE_KEY);
+                    const sunButton = document.getElementById('theme-toggle-sun');
+                    const moonButton = document.getElementById('theme-toggle-moon');
+
+                    if (savedTheme === 'dark') {
+                        document.body.classList.add('dark-mode');
+                        sunButton.style.display = 'inline-block';
+                        moonButton.style.display = 'none';
+                    } else {
+                        // Default to light mode, ensure class is removed
+                        document.body.classList.remove('dark-mode');
+                        sunButton.style.display = 'none';
+                        moonButton.style.display = 'inline-block';
+                    }
+                }
+            } catch (error) {
+                console.warn('Fehler beim Laden des Themes:', error);
+                // Fallback to light mode
+                document.getElementById('theme-toggle-sun').style.display = 'none';
+                document.getElementById('theme-toggle-moon').style.display = 'inline-block';
+            }
+        }
+        // --- END: Theme-Umschaltung ---
+        
         // Globale Variablen
         let allStories = [];
         let allCodes = [];
@@ -1180,7 +1427,7 @@
                                         </div>
                                     </div>
                                     <div style="margin-top: 10px;">
-                                        <a href="${SERVER_PATH}detail2.html?file=${story.html}_1.html" target="_blank" style="color: #007bff; text-decoration: none; font-weight: bold;">📖 Story öffnen</a>
+                                        <a href="https://lib.grass-kassel.de/adv2/detail2.html?file=${story.html}_1.html" target="_blank" style="color: #007bff; text-decoration: none; font-weight: bold;">📖 Story öffnen</a>
                                     </div>
                                 </div>
                             </td>
@@ -1512,6 +1759,9 @@
                 }, 1000);
             }
         }
+
+        // Theme beim Laden anwenden
+        document.addEventListener('DOMContentLoaded', loadTheme);
 
         // App beim Laden starten
         window.addEventListener('load', loadData);
